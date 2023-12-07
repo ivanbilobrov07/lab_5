@@ -127,6 +127,7 @@ namespace BLL
         public void Clear()
         {
             db.Clear();
+            entityList = new List<Person>();
         }
     }  
 }

@@ -96,19 +96,19 @@ namespace DAL
         {
             if (type == SerializationType.JSON)
             {
-                File.WriteAllBytes(connection + ".json", new byte[0]);
+                JSONSerialization<T>.Clear(connection);
             }
             else if (type == SerializationType.Binary)
             {
-                File.WriteAllBytes(connection + ".bin", new byte[0]);
+                BinarySerialization<T>.Clear(connection);
             }
             else if (type == SerializationType.XML)
             {
-                File.WriteAllBytes(connection + ".xml", new byte[0]);
+                XMLSerialization<T>.Clear(connection);
             }
             else
             {
-                File.WriteAllBytes(connection + ".custom.txt", new byte[0]);
+                CustomSerialization<T>.Clear(connection);
             }
         }
     }
@@ -154,6 +154,14 @@ namespace DAL
                 formatter.Serialize(fileStream, data);
             }
         }
+
+        static public void Clear(string connection)
+        {
+            using (FileStream fileStream = new(connection + ".bin", FileMode.Truncate))
+            {
+
+            }
+        }
     }
 
     public class JSONSerialization<T>
@@ -188,6 +196,14 @@ namespace DAL
             using (FileStream fileStream = new(connection + ".json", FileMode.Truncate))
             {
                 JsonSerializer.Serialize<List<T>>(fileStream, data, options);
+            }
+        }
+
+        static public void Clear(string connection)
+        {
+            using (FileStream fileStream = new(connection + ".json", FileMode.Truncate))
+            {
+    
             }
         }
     }
@@ -225,6 +241,14 @@ namespace DAL
             {
                 XmlSerializer formatter = new XmlSerializer(typeof(List<T>));
                 formatter.Serialize(fileStream, data);
+            }
+        }
+
+        static public void Clear(string connection)
+        {
+            using (FileStream fileStream = new(connection + ".xml", FileMode.Truncate))
+            {
+
             }
         }
     }
@@ -412,6 +436,14 @@ namespace DAL
                         writer.WriteLine(serializedData + ending);
                     }
                 }
+            }
+        }
+
+        static public void Clear(string connection)
+        {
+            using (FileStream fileStream = new(connection + ".custom.txt", FileMode.Truncate))
+            {
+
             }
         }
 
